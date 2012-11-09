@@ -16,3 +16,7 @@ class LanguageNotSupported(TranslationError):
 
 class LanguageNotDetected(TranslationError):
     pass
+
+
+class TranslationChainFailure(TranslationError):
+    pass
