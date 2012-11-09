@@ -11,10 +11,10 @@ Typical usecase is::
     import translate.google
 
     translate_en = lambda text: translate.yandex.translate(text, 'en-ru')
-    print translate('Coordinate system synchronizes the Dirichlet integral, which implies the desired equality.')
+    print translate_en('Coordinate system synchronizes the Dirichlet integral, which implies the desired equality.')
 
     translate_cn = lambda text: translate.google.translate(text, 'zh-CN', 'ru', 'your-api-key')
-    print translate(u'苹果')
+    print translate_cn(u'苹果')
 
 
 Install
