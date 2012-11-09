@@ -17,7 +17,10 @@ Typical use case is::
     print translate_cn(u'苹果')
 
 
-More advanced use case contains so-called "translation chains". If one translation function has failed, next is called::
+Advanced
+--------
+More advanced use case contains so-called "translation chains". 
+A chain lets me to have at least one fallback function.  If one translation function has failed, next is called::
 
     import translate.yandex
     import translate.google
@@ -26,13 +29,14 @@ More advanced use case contains so-called "translation chains". If one translati
     ytranslate_en = lambda text: translate.yandex.translate(text, 'en-ru')
     gtranslate_en = lambda text: translate.google.translate(text, 'en', 'ru', 'your-api-key')
 
-    # We may call Google and Yandex on every invocation of ``translate_en``.
-    translate_chain = translate.utils.chain(gtranslate, ytranslate)
-    print translate_chain("Calm down, I'm a doctor!")
+    translate_en = translate.utils.chain(gtranslate, ytranslate)
+    print translate_en("Calm down, I'm a doctor!")
 
-    # If Google failed it will never be called again.
-    translate_chain2 = translate.utils.marked_chain(gtranslate, ytranslate)
-    print translate_chain2("Calm down, I'm a doctor!")
+
+If failure is expensive either in terms of time or money, I can use ``marked_chain`` — when function has failed with 
+``TranslationError`` it will never be called again::
+
+    translate_en = translate.utils.marked_chain(gtranslate, ytranslate)
 
 
 Install
