@@ -6,7 +6,7 @@ More details at https://developers.google.com/translate/v2/using_rest
 """
 
 import requests
-from translate.exceptions import ServiceFailure, TextTooLong
+from translate.exceptions import ServiceFailure, TextTooLong, LanguageNotDetected
 
 
 FORMATS = ('text', 'html')
@@ -20,13 +20,15 @@ def languages(key):
     return [i['language'] for i in r.json['data']['languages']]
 
 
-def detect(text, key, format='text'):
+def detect(text, key, confidence=0.7, format='text'):
     """Detects the language of a text string. Returns """
     if format not in FORMATS:
         raise TypeError('The format should be "plain" or "html"')
     url = 'https://www.googleapis.com/language/translate/v2/detect'
     params = {'q': text, 'key': key}
     r = requests.get(url, params=params)
+    if r.json['data']['detections'][0][0]['confidence'] < confidence:
+        raise LanguageNotDetected
     return r.json['data']['detections'][0][0]['language']
 
 
