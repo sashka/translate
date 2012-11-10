@@ -19,7 +19,10 @@ def languages():
 
 
 def detect(text, format='plain'):
-    """Detects the language of a text string."""
+    """
+    Detects the language of a text string.
+    Throws LanguageNotDetected in case of empty response from Yandex.
+    """
     if format not in FORMATS:
         raise TypeError('The format should be one of %s' % repr(FORMATS))
     params = {'text': text, 'format': format}
@@ -29,13 +32,16 @@ def detect(text, format='plain'):
         lang = r.json['lang']
         if lang:
             return lang
-        raise LanguageNotDetected()
+        raise LanguageNotDetected
     else:
         raise TranslationError(code)
 
 
 def translate_many(text, lang, format='plain'):
-    """Translates a given text. ``text`` may be a single string or a list of strings. Returns a list of translated strings."""
+    """
+    Translates a given text. Text may be either a string or a list of strings.
+    Returns a list of translated strings.
+    """
     if format not in FORMATS:
         raise TypeError("The format should be one of %s, not '%s'" % (FORMATS, format))
 
@@ -47,7 +53,7 @@ def translate_many(text, lang, format='plain'):
     if code == 200:
         return r.json['text']
     elif code == 413:
-        raise TextTooLong()
+        raise TextTooLong
     elif code == 501:
         raise LanguageNotSupported(lang)
     else:
