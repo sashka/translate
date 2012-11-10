@@ -21,9 +21,13 @@ def languages(key):
 
 
 def detect(text, key, confidence=0.7, format='text'):
-    """Detects the language of a text string. Returns """
+    """
+    Detects the language of a text string.
+    Returns the most confident language code.
+    If confidence is less then a given threshold (0.7 by default) the LanguageNotDetected will be thrown.
+    """
     if format not in FORMATS:
-        raise TypeError('The format should be "plain" or "html"')
+        raise TypeError('The format should be one of %s' % (FORMATS,))
     url = 'https://www.googleapis.com/language/translate/v2/detect'
     params = {'q': text, 'key': key}
     r = requests.get(url, params=params)
@@ -33,7 +37,10 @@ def detect(text, key, confidence=0.7, format='text'):
 
 
 def translate_many(text, source_lang, target_lang, key, format='text'):
-    """Translate text."""
+    """
+    Translates a given text. Text may be either a string or a list of strings.
+    Returns a list of translated strings.
+    """
     if format not in FORMATS:
         raise TypeError("The format should be one of %s, not '%s'" % (FORMATS, format))
     url = 'https://www.googleapis.com/language/translate/v2'

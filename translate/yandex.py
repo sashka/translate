@@ -24,7 +24,7 @@ def detect(text, format='plain'):
     Throws LanguageNotDetected in case of empty response from Yandex.
     """
     if format not in FORMATS:
-        raise TypeError('The format should be one of %s' % repr(FORMATS))
+        raise TypeError('The format should be one of %s' % (FORMATS,))
     params = {'text': text, 'format': format}
     r = requests.get('http://translate.yandex.net/api/v1/tr.json/detect', params=params)
     code = r.json['code']
