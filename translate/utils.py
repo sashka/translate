@@ -12,7 +12,9 @@ def chain(*funcs):
     def translate(text):
         for f in funcs:
             try:
-                return f(text)
+                rv = f(text)
+                if rv:
+                    return rv
             except TranslationError:
                 continue
         raise TranslationChainFailure()
@@ -33,7 +35,9 @@ def marked_chain(*funcs):
             if f in dead:
                 continue
             try:
-                return f(text)
+                rv = f(text)
+                if rv:
+                    return rv
             except TranslationError:
                 dead.add(f)
         raise TranslationChainFailure()
